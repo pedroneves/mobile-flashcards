@@ -28,6 +28,24 @@ class Deck extends Component {
 		)
 	}
 
+	renderQuizButton (questionAmount) {
+		if (questionAmount > 0) {
+			const { touch, touchText, touchBlack, touchTextWhite } = Styles;
+
+			const startQuizTouchStyles = [touch, touchBlack];
+			const startQuizTouchTextStyles = [touchText, touchTextWhite];
+
+			return (
+				<TouchableOpacity
+					style={startQuizTouchStyles}
+					onPress={this.startQuiz}
+				>
+					<Text style={startQuizTouchTextStyles}>Start Quiz</Text>
+				</TouchableOpacity>
+			)
+		}
+	}
+
 	render () {
 		const id = this.props.navigation.state.params.deckId;
 		const deck = this.props.decks[id];
@@ -39,14 +57,12 @@ class Deck extends Component {
 		const total = deck.questions.length;
 
 		const {
-			touch, touchWhite, touchBlack, touchText,
-			touchTextBlack, touchTextWhite,  mb20
+			touch, touchWhite, touchText,
+			touchTextBlack,  mb20
 		} = Styles;
 
 		const addCardTouchStyles = [touch, touchWhite, mb20];
 		const addCardTouchTextStyles = [touchText, touchTextBlack];
-		const startQuizTouchStyles = [touch, touchBlack];
-		const startQuizTouchTextStyles = [touchText, touchTextWhite];
 
 		return (
 			<View style={styles.container}>
@@ -63,9 +79,7 @@ class Deck extends Component {
 						<Text style={addCardTouchTextStyles}>Add Card</Text>
 					</TouchableOpacity>
 
-					<TouchableOpacity style={startQuizTouchStyles}>
-						<Text style={startQuizTouchTextStyles}>Start Quiz</Text>
-					</TouchableOpacity>
+					{ this.renderQuizButton(total) }
 				</View>
 			</View>
 		)
