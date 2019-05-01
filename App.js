@@ -1,21 +1,50 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { StackNavigator, TabNavigator } from "react-navigation";
 
-export default class App extends React.Component {
+import Deck from './src/components/Deck';
+import TopBar from './src/components/TopBar';
+import AddCard from './src/components/AddCard';
+import AddDeck from './src/components/AddDeck';
+import DeckList from './src/components/DeckList';
+
+const Tabs = TabNavigator({
+	DeckList: {
+		screen: DeckList,
+		navigationOptions: {
+			tabBarLabel: 'Deck List',
+			tabBarIcon: ({ tintColor }) => <Entypo name='plus' size={30} color={tintColor} />
+		},
+	},
+	AddDeck: {
+		screen: AddDeck,
+		navigationOptions: {
+			tabBarLabel: 'New Deck',
+			tabBarIcon: ({ tintColor }) => <Entypo name='plus' size={30} color={tintColor} />
+		},
+	},
+})
+
+const MainStack = StackNavigator({
+	Home: {
+		screen: Tabs,
+		navigationOptions: {
+			header: null
+		}
+	},
+	AddCard: { screen: AddCard },
+	Deck: { screen: Deck }
+})
+
+class App extends React.Component {
 	render() {
 		return (
-			<View style={styles.container}>
-				<Text>Open up App.js to start working on your app!</Text>
+			<View style={{ flex: 1 }}>
+				<TopBar barStyle="light-content" />
+				<MainStack />
 			</View>
 		);
 	}
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
+export default App;
