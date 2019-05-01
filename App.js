@@ -7,6 +7,7 @@ import { Entypo } from '@expo/vector-icons';
 import { StackNavigator, TabNavigator } from "react-navigation";
 
 import Deck from './src/components/Deck';
+import Quiz from './src/components/Quiz';
 import TopBar from './src/components/TopBar';
 import AddCard from './src/components/AddCard';
 import AddDeck from './src/components/AddDeck';
@@ -54,7 +55,8 @@ const MainStack = StackNavigator({
 		}
 	},
 	AddCard: { screen: AddCard },
-	Deck: { screen: Deck }
+	Deck: { screen: Deck },
+	Quiz: { screen: Quiz }
 })
 
 const store = createStore(reducers);
