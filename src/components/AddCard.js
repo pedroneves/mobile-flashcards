@@ -10,6 +10,7 @@ import {
 	setDecks
  } from '../actions';
 import {
+	Alert,
 	Keyboard,
 	View,
 	Text,
@@ -37,6 +38,16 @@ class AddCard extends Component {
 
 		const { question, answer } = this.state;
 		const { deckId } = this.props.navigation.state.params;
+
+		if (question.length === 0) {
+			Alert.alert('Invalid Question', 'Type something for the Question...');
+			return;
+		}
+
+		if (answer.length === 0) {
+			Alert.alert('Invalid Answer', 'Type something for the Answer...');
+			return;
+		}
 
 		API.addCardToDeck(deckId, { question, answer })
 			.then(deck => {
