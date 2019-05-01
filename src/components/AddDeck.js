@@ -1,5 +1,4 @@
 import * as API from '../api';
-import Colors from '../colors';
 import Styles from '../styles';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
@@ -15,7 +14,6 @@ import {
 	Text,
 	TextInput,
 	TouchableOpacity,
-	StyleSheet,
 	KeyboardAvoidingView
 } from 'react-native';
 
@@ -63,10 +61,10 @@ class AddDeck extends Component {
 		const submitTouchTextStyles = [touchText, touchTextWhite]
 
 		return (
-			<KeyboardAvoidingView style={styles.container}  behavior="padding" enabled>
-				<View style={styles.textInputContainer}>
+			<KeyboardAvoidingView style={Styles.containerMiddle} behavior="padding" enabled>
+				<View style={Styles.textInputContainer}>
 					<TextInput
-						style={styles.textInput}
+						style={Styles.textInput}
 						placeholder="Type the deck title here"
 						value={this.state.deckTitle}
 						onChangeText={(deckTitle) => this.setState({deckTitle})}
@@ -82,22 +80,5 @@ class AddDeck extends Component {
 		)
 	}
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	textInputContainer: {
-		padding: 5,
-		borderBottomWidth: 1,
-		borderColor: Colors.black,
-		marginBottom: 50
-	},
-	textInput: {
-		fontSize: 25
-	}
-})
 
 export default connect()(AddDeck);

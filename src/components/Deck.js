@@ -7,12 +7,14 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 class Deck extends Component {
 	addCard = () => {
 		const deckId = this.props.navigation.state.params.deckId;
-		this.props.navigation.navigate('AddCard', { deckId });
+		const deckTitle = this.props.decks[deckId].title;
+		this.props.navigation.navigate('AddCard', { deckId, deckTitle });
 	}
 
 	startQuiz = () => {
 		const deckId = this.props.navigation.state.params.deckId;
-		this.props.navigation.navigate('Quiz', { deckId });
+		const deckTitle = this.props.decks[deckId].title;
+		this.props.navigation.navigate('Quiz', { deckId, deckTitle });
 	}
 
 	renderDeckLoadFailureMessage () {
@@ -54,7 +56,10 @@ class Deck extends Component {
 				</View>
 
 				<View>
-					<TouchableOpacity style={addCardTouchStyles}>
+					<TouchableOpacity
+						style={addCardTouchStyles}
+						onPress={this.addCard}
+					>
 						<Text style={addCardTouchTextStyles}>Add Card</Text>
 					</TouchableOpacity>
 
