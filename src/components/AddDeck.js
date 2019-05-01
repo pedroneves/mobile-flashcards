@@ -9,6 +9,7 @@ import {
 	setDecks
  } from '../actions';
 import {
+	Alert,
 	Keyboard,
 	View,
 	Text,
@@ -34,6 +35,11 @@ class AddDeck extends Component {
 		Keyboard.dismiss();
 
 		const deckTitle = this.state.deckTitle;
+
+		if (deckTitle.length === 0) {
+			Alert.alert('Invalid Title', 'Type something for the Deck title...');
+			return;
+		}
 
 		API.saveDeckTitle(deckTitle)
 			.then(id => {
