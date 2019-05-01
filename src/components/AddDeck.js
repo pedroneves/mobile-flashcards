@@ -79,7 +79,7 @@ class AddDeck extends Component {
 
 				<View>
 					<TouchableOpacity style={submitTouchStyles} onPress={this.createDeck}>
-						<Text style={submitTouchTextStyles}>Submit</Text>
+						<Text style={submitTouchTextStyles}>Create Deck</Text>
 					</TouchableOpacity>
 				</View>
 			</KeyboardAvoidingView>
