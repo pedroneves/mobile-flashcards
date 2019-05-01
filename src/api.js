@@ -1,3 +1,4 @@
+import Utils from './utils';
 import { AsyncStorage } from "react-native";
 
 const DECKS_STORAGE_KEY = 'MobileFlash:decks';
@@ -12,7 +13,16 @@ export function getDecks () {
 
 export function getDeck () {};
 
-export function saveDeckTitle () {};
+export function saveDeckTitle (title) {
+	const id = Utils.generateUID();
+	const questions = [];
+	const deck = { title, questions };
+	const entry = { [id]: deck };
+
+	return AsyncStorage
+		.mergeItem(DECKS_STORAGE_KEY, JSON.stringify(entry))
+		.then(() => id);
+};
 
 export function addCardToDeck () {};
 
