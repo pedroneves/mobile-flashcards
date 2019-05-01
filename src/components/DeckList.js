@@ -2,7 +2,7 @@ import * as API from "../api";
 import Colors from '../colors';
 import { connect } from "react-redux";
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import {
 	startLoadingDecks,
 	successfullyLoadedDecks,
@@ -47,13 +47,13 @@ class DeckList extends Component {
 		const deckIds = this.props.deckIds;
 
 		return (
-			<View style={{ paddingTop: 30 }}>
+			<ScrollView contentContainerStyle={{ paddingTop: 30, paddingBottom: 20 }}>
 				{
 					deckIds.map(id => {
 						return <View key={id}>{this.renderDeck(id)}</View>
 					})
 				}
-			</View>
+			</ScrollView>
 		)
 	}
 }
