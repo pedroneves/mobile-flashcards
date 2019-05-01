@@ -1,7 +1,22 @@
 import * as API from '../api';
 import Colors from '../colors';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { Keyboard, View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+	startSavingDeck,
+	successfullySavedDeck,
+	failedSaveDeck,
+	setDecks
+ } from '../actions';
+import {
+	Keyboard,
+	View,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	StyleSheet,
+	KeyboardAvoidingView
+} from 'react-native';
 
 class AddDeck extends Component {
 	constructor (props) {
@@ -13,19 +28,42 @@ class AddDeck extends Component {
 	}
 
 	createDeck = () => {
+		const { dispatch } = this.props;
+
+		dispatch(startSavingDeck())
+
 		Keyboard.dismiss();
-		const deckId = 'some-id';
+
 		const deckTitle = this.state.deckTitle;
-		this.props.navigation.push('Deck', { deckId, deckTitle })
+
+		API.saveDeckTitle(deckTitle)
+			.then(id => {
+				return API.getDecks()
+					.then((allDecks) => {
+						dispatch(setDecks(allDecks))
+						return id
+					})
+			})
+			.then(id => {
+				dispatch(successfullySavedDeck())
+
+				const deckId = id;
+				this.props.navigation.push('Deck', { deckId, deckTitle });
+				this.setState({ deckTitle: '' });
+			})
+			.catch(error => {
+				dispatch(failedSaveDeck(error))
+			})
 	}
 
 	render () {
 		return (
-			<View style={styles.container}>
+			<KeyboardAvoidingView style={styles.container}  behavior="padding" enabled>
 				<View style={styles.textInputContainer}>
 					<TextInput
 						style={styles.textInput}
 						placeholder="Type the deck title here"
+						value={this.state.deckTitle}
 						onChangeText={(deckTitle) => this.setState({deckTitle})}
 					/>
 				</View>
@@ -35,7 +73,7 @@ class AddDeck extends Component {
 						<Text style={styles.text}>Submit</Text>
 					</TouchableOpacity>
 				</View>
-			</View>
+			</KeyboardAvoidingView>
 		)
 	}
 }
@@ -68,4 +106,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default AddDeck;
+export default connect()(AddDeck);
