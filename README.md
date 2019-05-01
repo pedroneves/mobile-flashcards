@@ -32,3 +32,4 @@ For a better performance, activate the [production mode](https://docs.expo.io/ve
 ## Tested Environments
 
 - Expo Client App Android v8.1.0
+- [Expo Snac Web Client](https://snack.expo.io/)
