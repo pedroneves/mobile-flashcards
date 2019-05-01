@@ -1,4 +1,5 @@
 import Colors from '../colors';
+import Styles from '../styles';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
@@ -35,6 +36,16 @@ class Deck extends Component {
 
 		const total = deck.questions.length;
 
+		const {
+			touch, touchWhite, touchBlack, touchText,
+			touchTextBlack, touchTextWhite,  mb20
+		} = Styles;
+
+		const addCardTouchStyles = [touch, touchWhite, mb20];
+		const addCardTouchTextStyles = [touchText, touchTextBlack];
+		const startQuizTouchStyles = [touch, touchBlack];
+		const startQuizTouchTextStyles = [touchText, touchTextWhite];
+
 		return (
 			<View style={styles.container}>
 				<View>
@@ -43,12 +54,12 @@ class Deck extends Component {
 				</View>
 
 				<View>
-					<TouchableOpacity style={[styles.touch, styles.touchGreen]}>
-						<Text style={styles.text}>Add Card</Text>
+					<TouchableOpacity style={addCardTouchStyles}>
+						<Text style={addCardTouchTextStyles}>Add Card</Text>
 					</TouchableOpacity>
 
-					<TouchableOpacity style={[styles.touch, styles.toucheBlue]}>
-						<Text style={styles.text}>Start Quiz</Text>
+					<TouchableOpacity style={startQuizTouchStyles}>
+						<Text style={startQuizTouchTextStyles}>Start Quiz</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -83,25 +94,6 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 30,
 		color: Colors.gray
-	},
-	touch: {
-		padding: 30,
-		marginBottom: 20,
-		borderRadius: 10
-	},
-	touchGreen: {
-		backgroundColor: Colors.green,
-	},
-	toucheBlue: {
-		backgroundColor: Colors.blue,
-	},
-	text: {
-		fontSize: 20,
-		color: Colors.white,
-	},
-	textFailure: {
-		fontSize: 20,
-		color: Colors.black,
 	}
 })
 

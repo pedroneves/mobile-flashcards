@@ -1,5 +1,6 @@
 import * as API from '../api';
 import Colors from '../colors';
+import Styles from '../styles';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import {
@@ -57,6 +58,10 @@ class AddDeck extends Component {
 	}
 
 	render () {
+		const { touch, touchBlack, touchText, touchTextWhite } = Styles;
+		const submitTouchStyles = [touch, touchBlack]
+		const submitTouchTextStyles = [touchText, touchTextWhite]
+
 		return (
 			<KeyboardAvoidingView style={styles.container}  behavior="padding" enabled>
 				<View style={styles.textInputContainer}>
@@ -69,8 +74,8 @@ class AddDeck extends Component {
 				</View>
 
 				<View>
-					<TouchableOpacity style={[styles.touch, styles.touchBlack]} onPress={this.createDeck}>
-						<Text style={styles.text}>Submit</Text>
+					<TouchableOpacity style={submitTouchStyles} onPress={this.createDeck}>
+						<Text style={submitTouchTextStyles}>Submit</Text>
 					</TouchableOpacity>
 				</View>
 			</KeyboardAvoidingView>
@@ -92,17 +97,6 @@ const styles = StyleSheet.create({
 	},
 	textInput: {
 		fontSize: 25
-	},
-	touch: {
-		padding: 30,
-		borderRadius: 10
-	},
-	touchBlack: {
-		backgroundColor: Colors.black,
-	},
-	text: {
-		fontSize: 20,
-		color: Colors.white,
 	}
 })
 
