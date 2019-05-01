@@ -1,45 +1,48 @@
 import Utils from './utils';
 import { AsyncStorage } from "react-native";
 
-const DECKS_STORAGE_KEY = 'MobileFlash:decks';
+let IS_INITED = false;
+const DECKS_STORAGE_KEY = 'MobileFlashcards:decks';
 
-export function getDecks () {
-	return AsyncStorage.getItem(DECKS_STORAGE_KEY)
-		.then((data) => {
-			data = JSON.parse(data)
-			return data;
-		})
+export async function getDecks () {
+	await apiInit();
+	const dataString = await AsyncStorage.getItem(DECKS_STORAGE_KEY);
+	const data = JSON.parse(dataString)
+	return data
 };
 
-export function getDeck (id) {
-	return getDecks()
-		.then(decks => {
-			return decks[id]
-		})
+export async function getDeck (id) {
+	await apiInit();
+	const decks = await getDecks();
+	return decks[id];
 };
 
-export function saveDeckTitle (title) {
+export async function saveDeckTitle (title) {
+	await apiInit();
 	const id = Utils.generateUID();
 	const questions = [];
 	const deck = { title, questions };
 
-	return saveDeck(id, deck);
+	await saveDeck(id, deck);
+
+	return id;
 };
 
-export function addCardToDeck (id, card) {
-	return getDeck(id)
-		.then(deck => {
-			deck.questions.push(card)
-			return saveDeck(id, deck)
-		})
+export async function addCardToDeck (id, card) {
+	await apiInit();
+	const deck = await getDeck(id);
+	deck.questions.push(card);
+
+	await saveDeck(id, deck);
+
+	return deck;
 };
 
-function saveDeck (id, deck) {
+async function saveDeck (id, deck) {
 	const entry = { [id]: deck };
-
-	return AsyncStorage
-		.mergeItem(DECKS_STORAGE_KEY, JSON.stringify(entry))
-		.then(() => deck);
+	const entryString = JSON.stringify(entry);
+	await AsyncStorage.mergeItem(DECKS_STORAGE_KEY, entryString);
+	return deck;
 }
 
 // Initial data
@@ -68,15 +71,17 @@ const initData = {
 	}
 }
 
-function apiInit () {
-	AsyncStorage
-		.getItem(DECKS_STORAGE_KEY)
-		.then(data => {
-			if (data === null) {
-				return AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(initData))
-			}
-			return data;
-		})
-}
+async function apiInit () {
+	if (IS_INITED) {
+		return;
+	}
 
-apiInit()
+	const data = await AsyncStorage.getItem(DECKS_STORAGE_KEY);
+
+	if (data === null) {
+		const initDataString = JSON.stringify(initData)
+		await AsyncStorage.setItem(DECKS_STORAGE_KEY, initDataString)
+	}
+
+	return data;
+}
