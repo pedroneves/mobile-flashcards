@@ -3,7 +3,7 @@ import Colors from './src/colors';
 import { View } from 'react-native';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackNavigator, TabNavigator } from "react-navigation";
 
 import Deck from './src/components/Deck';
@@ -20,7 +20,7 @@ const Tabs = TabNavigator({
 		screen: DeckList,
 		navigationOptions: {
 			tabBarLabel: 'Decks',
-			tabBarIcon: ({ tintColor }) => <Entypo name='plus' size={30} color={tintColor} />
+			tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='cards' size={30} color={tintColor} />
 		},
 	},
 	AddDeck: {
@@ -33,6 +33,9 @@ const Tabs = TabNavigator({
 }, {
 	tabBarOptions: {
 		activeTintColor: Colors.white,
+		labelStyle: {
+			fontSize: 15,
+		},
 		style: {
 			height: 56,
 			backgroundColor: Colors.black,
