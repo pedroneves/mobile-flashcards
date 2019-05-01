@@ -1,7 +1,22 @@
+import * as API from '../api';
 import Colors from '../colors';
 import Styles from '../styles';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { Keyboard, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import {
+	startSavingCard,
+	successfullySavedCard,
+	failedSaveCard,
+	setDecks
+ } from '../actions';
+import {
+	Keyboard,
+	View,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	KeyboardAvoidingView
+} from 'react-native';
 
 class AddCard extends Component {
 	constructor (props) {
@@ -13,9 +28,33 @@ class AddCard extends Component {
 		}
 	}
 
-	createCard = () => {
+	addCard = () => {
+		const { dispatch } = this.props;
+
+		dispatch(startSavingCard())
+
 		Keyboard.dismiss();
-		this.props.navigation.goBack()
+
+		const { question, answer } = this.state;
+		const { deckId } = this.props.navigation.state.params;
+
+		API.addCardToDeck(deckId, { question, answer })
+			.then(deck => {
+				this.setState({ question: '', answer: '' });
+				this.props.navigation.goBack();
+
+				return API.getDecks()
+					.then((allDecks) => {
+						dispatch(setDecks(allDecks))
+						return deck
+					})
+			})
+			.then(deck => {
+				dispatch(successfullySavedCard())
+			})
+			.catch(error => {
+				dispatch(failedSaveCard(error))
+			})
 	}
 
 	render () {
@@ -44,7 +83,7 @@ class AddCard extends Component {
 				</View>
 
 				<View>
-					<TouchableOpacity style={submitTouchStyles} onPress={this.createCard}>
+					<TouchableOpacity style={submitTouchStyles} onPress={this.addCard}>
 						<Text style={submitTouchTextStyles}>Submit</Text>
 					</TouchableOpacity>
 				</View>
@@ -57,7 +96,7 @@ AddCard.navigationOptions = function ({ navigation }) {
 	const { deckTitle } = navigation.state.params;
 
 	return {
-		title: `Add card to ${deckTitle}`,
+		title: `Add card to deck "${deckTitle}"`,
 		headerTintColor: Colors.white,
 		headerStyle: {
 			backgroundColor: Colors.black,
@@ -65,4 +104,4 @@ AddCard.navigationOptions = function ({ navigation }) {
 	}
 }
 
-export default AddCard;
+export default connect()(AddCard);
