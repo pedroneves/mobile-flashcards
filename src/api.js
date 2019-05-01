@@ -11,20 +11,36 @@ export function getDecks () {
 		})
 };
 
-export function getDeck () {};
+export function getDeck (id) {
+	return getDecks()
+		.then(decks => {
+			return decks[id]
+		})
+};
 
 export function saveDeckTitle (title) {
 	const id = Utils.generateUID();
 	const questions = [];
 	const deck = { title, questions };
+
+	return saveDeck(id, deck);
+};
+
+export function addCardToDeck (id, card) {
+	return getDeck(id)
+		.then(deck => {
+			deck.questions.push(card)
+			return saveDeck(id, deck)
+		})
+};
+
+function saveDeck (id, deck) {
 	const entry = { [id]: deck };
 
 	return AsyncStorage
 		.mergeItem(DECKS_STORAGE_KEY, JSON.stringify(entry))
-		.then(() => id);
-};
-
-export function addCardToDeck () {};
+		.then(() => deck);
+}
 
 // Initial data
 const initData = {
