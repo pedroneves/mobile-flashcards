@@ -18,7 +18,7 @@ const Tabs = TabNavigator({
 	DeckList: {
 		screen: DeckList,
 		navigationOptions: {
-			tabBarLabel: 'Deck List',
+			tabBarLabel: 'Decks',
 			tabBarIcon: ({ tintColor }) => <Entypo name='plus' size={30} color={tintColor} />
 		},
 	},
