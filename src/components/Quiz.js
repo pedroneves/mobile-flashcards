@@ -52,21 +52,21 @@ class Quiz extends Component {
 		const incorrectTouchTextStyles = [touchText, touchTextWhite];
 
 		const cardText = this.state.isShowingQuestion ? quiz.question : quiz.answer;
-		const cardOption = this.state.isShowingQuestion ? 'Answer' : 'Question';
+		const cardOption = this.state.isShowingQuestion ? 'Show Answer' : 'Show Question';
 
 		return (
-			<View style={styles.container}>
+			<ScrollView contentContainerStyle={styles.container}>
 				<View style={styles.questionAmountContainer}>
 					<Text style={styles.questionAmount}>{current} / {total}</Text>
 				</View>
 
-				<ScrollView contentContainerStyle={styles.card}>
+				<View style={[styles.card, styles.shadow]}>
 					<Text style={styles.cardText}>{cardText}</Text>
 
 					<TouchableOpacity onPress={this.toggleCardOption}>
 						<Text style={styles.cardOptionText}>{cardOption}</Text>
 					</TouchableOpacity>
-				</ScrollView>
+				</View>
 
 				<View style={{paddingVertical: 10, paddingHorizontal: 40}}>
 					<TouchableOpacity
@@ -83,7 +83,7 @@ class Quiz extends Component {
 						<Text style={incorrectTouchTextStyles}>Incorrect</Text>
 					</TouchableOpacity>
 				</View>
-			</View>
+			</ScrollView>
 		)
 	}
 
@@ -108,14 +108,14 @@ class Quiz extends Component {
 						style={redoTouchStyles}
 						onPress={this.reset}
 					>
-						<Text style={redoTouchTextStyles}>Redo</Text>
+						<Text style={redoTouchTextStyles}>Restart Quiz</Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity
 						style={backTouchStyles}
 						onPress={() => this.props.navigation.goBack()}
 					>
-						<Text style={backTouchTextStyles}>Back</Text>
+						<Text style={backTouchTextStyles}>Back to Deck</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -150,7 +150,6 @@ Quiz.navigationOptions = function ({ navigation }) {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: 'flex-start',
 		alignItems: 'stretch',
 	},
