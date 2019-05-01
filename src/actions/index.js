@@ -4,7 +4,6 @@ export const LOAD_DECKS_FAIL = 'LOAD_DECKS_FAIL';
 export const SET_DECKS = 'SET_DECKS';
 
 export function startLoadingDecks () {
-	console.log('startLoadingDecks fired')
 	return { type: LOAD_DECKS_START }
 }
 
