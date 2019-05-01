@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
 	card: {
 		marginRight: 10,
 		marginLeft: 10,
+		marginBottom: 10,
 		padding: 10,
 		paddingTop: 50,
 		paddingBottom: 50,
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 	},
 	shadow: {
-		shadowColor: 'rgba(0, 0, 0, 0.84)',
+		shadowColor: 'rgba(0, 0, 0, 0.25)',
 		shadowOffset: {
 			width: 0,
 			height: 5
