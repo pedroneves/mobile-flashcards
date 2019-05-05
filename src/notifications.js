@@ -1,3 +1,4 @@
+import { AsyncStorage } from "react-native";
 import { Notifications, Permissions } from 'expo';
 
 const second = 1000;
@@ -8,7 +9,9 @@ const week = 7 * day;
 const month = 30 * day;
 const year = 365 * day;
 
-const INTERVAL = day;
+const STUDY_REMINDER_STORAGE_KEY = 'MobileFlashcards:studyreminders';
+
+const NOTIFICATION_HOUR = 20;
 
 function createStudyReminderLocalNotification () {
 	return {
@@ -24,10 +27,25 @@ function createStudyReminderLocalNotification () {
 	}
 }
 
-function getNextNotificationDate () {
-	const next = new Date(Date.now() + INTERVAL);
+function getNextNotificationDate (lastStudyDate = new Date(0)) {
+	let next;
+	const now = new Date();
 
-	next.setHours(20);
+	if (lastStudyDate < now) {
+		const hasStudiedToday = lastStudyDate.getDate() === now.getDate();
+		const canBeSetForToday = now.getHours() < NOTIFICATION_HOUR;
+
+		if (hasStudiedToday) {
+			next = new Date(now.valueOf() + day);
+		} else if (!canBeSetForToday) {
+			next = new Date(now.valueOf() + day);
+		} else {
+			next = new Date();
+		}
+
+	}
+
+	next.setHours(NOTIFICATION_HOUR);
 	next.setMinutes(0);
 	next.setSeconds(0);
 	next.setMilliseconds(0)
@@ -36,20 +54,25 @@ function getNextNotificationDate () {
 }
 
 function getIntervalCategory () {
+	return 'day'
+}
 
-	if (INTERVAL > month) {
-		return 'year';
-	} else if (INTERVAL < year && INTERVAL >= month) {
-		return 'month';
-	} else if (INTERVAL < month && INTERVAL >= week) {
-		return 'week';
-	} else if (INTERVAL < week && INTERVAL >= day) {
-		return 'day';
-	} else if (INTERVAL < day && INTERVAL >= hour) {
-		return 'hour';
-	} else {
-		return 'minute';
-	}
+async function getLastStudyDate () {
+	const dataString = await AsyncStorage.getItem(STUDY_REMINDER_STORAGE_KEY);
+	const data = JSON.parse(dataString);
+
+	const { lastStudiedAt } = data;
+	return new Date(lastStudiedAt);
+}
+
+export async function saveLastStudyNow () {
+	await saveLastStudiedDate(new Date())
+}
+
+export async function saveLastStudiedDate (date) {
+	const entry = { lastStudiedAt: date.valueOf() };
+	const entryString = JSON.stringify(entry);
+	await AsyncStorage.mergeItem(STUDY_REMINDER_STORAGE_KEY, entryString);
 }
 
 export async function verifyPermissions () {
@@ -65,10 +88,12 @@ export async function clearStudyReminderNotifications () {
 export async function setStudyReminderNotification () {
 	const hasPermission = await verifyPermissions();
 
+	const lastStudiedAt = await getLastStudyDate();
+
 	if (hasPermission) {
 		const notif = createStudyReminderLocalNotification();
 		const options = {
-			time: getNextNotificationDate(),
+			time: getNextNotificationDate(lastStudiedAt),
 			repeat: getIntervalCategory()
 		}
 
@@ -79,4 +104,17 @@ export async function setStudyReminderNotification () {
 export async function resetStudyReminderNotifications () {
 	await clearStudyReminderNotifications();
 	await setStudyReminderNotification();
+}
+
+export async function init () {
+	const data = await AsyncStorage.getItem(STUDY_REMINDER_STORAGE_KEY);
+
+	if (data === null) {
+		saveLastStudiedDate(new Date(0))
+		const hasPermissions = await verifyPermissions();
+
+		if (hasPermissions) {
+			await setStudyReminderNotification()
+		}
+	}
 }

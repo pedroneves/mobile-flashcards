@@ -17,7 +17,10 @@ class Quiz extends Component {
 	}
 
 	componentDidMount () {
-		Notifications.resetStudyReminderNotifications();
+		Notifications.saveLastStudyNow()
+			.then(() => {
+				Notifications.resetStudyReminderNotifications();
+			})
 	}
 
 	reset = () => {

@@ -67,7 +67,7 @@ const store = createStore(reducers);
 
 class App extends React.Component {
 	componentDidMount () {
-		Notifications.resetStudyReminderNotifications();
+		Notifications.init();
 	}
 
 	render() {
