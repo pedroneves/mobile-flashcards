@@ -17,7 +17,7 @@ Clone this repo and, inside the cloned rep, run:
 
 Also, it's required you to download the Expo Client for [iOS](https://itunes.apple.com/us/app/expo-client/id982107779) or [Android](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en_US)
 
-## Laching
+## Launching
 
 After installation, run:
 
