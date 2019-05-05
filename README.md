@@ -9,6 +9,8 @@ With this app, you will be able to create decks of question cards, to help you c
 - Do de quiz game for a specific deck;
 - Get the results of a quiz game;
 
+Every day at 20 o'clock, the app will notify the user to remind him to study, if user hasn't studied that day.
+
 ## Installation
 
 Clone this repo and, inside the cloned rep, run:
@@ -32,4 +34,4 @@ For a better performance, activate the [production mode](https://docs.expo.io/ve
 ## Tested Environments
 
 - Expo Client App Android v8.1.0
-- [Expo Snac Web Client](https://snack.expo.io/)
+- [Expo Snac Web Client](https://snack.expo.io/) (iOS and Android)
