@@ -3,7 +3,7 @@ import Colors from './src/colors';
 import { View } from 'react-native';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import * as Notifications from './src/notifications';
+import { init } from './src/notifications';
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackNavigator, TabNavigator } from "react-navigation";
 
@@ -67,7 +67,7 @@ const store = createStore(reducers);
 
 class App extends React.Component {
 	componentDidMount () {
-		Notifications.init();
+		init();
 	}
 
 	render() {
