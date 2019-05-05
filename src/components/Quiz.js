@@ -2,6 +2,7 @@ import Colors from '../colors';
 import Styles from '../styles';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import * as Notifications from '../notifications';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 class Quiz extends Component {
@@ -13,6 +14,10 @@ class Quiz extends Component {
 			score: 0,
 			isShowingQuestion: true,
 		}
+	}
+
+	componentDidMount () {
+		Notifications.resetStudyReminderNotifications();
 	}
 
 	reset = () => {

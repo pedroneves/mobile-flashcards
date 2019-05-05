@@ -3,6 +3,7 @@ import Colors from './src/colors';
 import { View } from 'react-native';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import * as Notifications from './src/notifications';
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackNavigator, TabNavigator } from "react-navigation";
 
@@ -65,6 +66,10 @@ const MainStack = StackNavigator({
 const store = createStore(reducers);
 
 class App extends React.Component {
+	componentDidMount () {
+		Notifications.resetStudyReminderNotifications();
+	}
+
 	render() {
 		return (
 			<Provider store={store}>
