@@ -6,6 +6,7 @@ const hour = 60 * minute;
 const day = 24 * hour;
 const week = 7 * day;
 const month = 30 * day;
+const year = 365 * day;
 
 const INTERVAL = day;
 
