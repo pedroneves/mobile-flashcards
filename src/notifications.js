@@ -7,7 +7,7 @@ const day = 24 * hour;
 const week = 7 * day;
 const month = 30 * day;
 
-const INTERVAL = 3 * minute;
+const INTERVAL = day;
 
 function createStudyReminderLocalNotification () {
 	return {
@@ -24,13 +24,22 @@ function createStudyReminderLocalNotification () {
 }
 
 function getNextNotificationDate () {
-	return new Date(Date.now() + INTERVAL);
+	const next = new Date(Date.now() + INTERVAL);
+
+	next.setHours(20);
+	next.setMinutes(0);
+	next.setSeconds(0);
+	next.setMilliseconds(0)
+
+	return next;
 }
 
 function getIntervalCategory () {
 
 	if (INTERVAL > month) {
 		return 'year';
+	} else if (INTERVAL < year && INTERVAL >= month) {
+		return 'month';
 	} else if (INTERVAL < month && INTERVAL >= week) {
 		return 'week';
 	} else if (INTERVAL < week && INTERVAL >= day) {
